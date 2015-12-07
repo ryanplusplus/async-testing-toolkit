@@ -1,0 +1,30 @@
+{
+  "name": "async-testing-toolkit",
+  "version": "0.0.1",
+  "description": "Tools for getting asynchronous testing under control in JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryanplusplus/async-testing-toolkit.git"
+  },
+  "keywords": [
+    "TDD",
+    "Testing",
+    "Async",
+    "Promise",
+    "Mock"
+  ],
+  "author": "Ryan Hartlage",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryanplusplus/async-testing-toolkit/issues"
+  },
+  "homepage": "https://github.com/ryanplusplus/async-testing-toolkit#readme",
+  "devDependencies": {
+    "jasmine": "2.3.2",
+    "mach.js": "0.0.9"
+  }
+}
