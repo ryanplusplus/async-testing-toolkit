@@ -19,9 +19,10 @@ function Promise(eventLoop) {
 
    var P = function(fn) {
       let syncPromise = new SyncPromise(fn);
+
       return {
          then: function(cb) {
-            syncPromise.then(function(v) {
+            syncPromise = syncPromise.then(function(v) {
                eventLoop.push(function() {
                   cb(v);
                });
@@ -29,7 +30,7 @@ function Promise(eventLoop) {
             return this;
          },
          catch: function(cb) {
-            syncPromise.catch(function(v) {
+            syncPromise = syncPromise.catch(function(v) {
                eventLoop.push(function() {
                   cb(v);
                });
@@ -44,7 +45,7 @@ function Promise(eventLoop) {
 
       return {
          then: function(cb) {
-            promiseAll.then(function(v) {
+            promiseAll = promiseAll.then(function(v) {
                eventLoop.push(function() {
                   cb(v);
                });
@@ -52,7 +53,7 @@ function Promise(eventLoop) {
             return this;
          },
          catch: function(cb) {
-            promiseAll.catch(function(v) {
+            promiseAll = promiseAll.catch(function(v) {
                eventLoop.push(function() {
                   cb(v);
                });

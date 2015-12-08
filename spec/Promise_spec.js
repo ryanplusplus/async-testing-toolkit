@@ -83,10 +83,8 @@ describe('Promise', function() {
 
       reject(42);
 
-      cb.shouldBeCalledWith(mach.same([42])).when(function() {
+      cb.shouldBeCalledWith(42).when(function() {
          while(!loop.empty()) loop.run();
       });
    });
-
-   // Promise.all
 });
