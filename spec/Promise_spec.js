@@ -29,7 +29,7 @@ describe('Promise', function() {
       resolve(42);
 
       cb.shouldBeCalledWith(42).when(function() {
-         loop.run();
+         while(!loop.empty()) loop.run();
       });
    });
 
@@ -45,7 +45,20 @@ describe('Promise', function() {
       reject(42);
 
       cb.shouldBeCalledWith(42).when(function() {
-         loop.run();
+         while(!loop.empty()) loop.run();
+      });
+   });
+
+   it('should allow synchronously resolved promise', function() {
+      var p = new Promise(function(resolve) {
+         resolve(4);
+      });
+
+      var cb = mach.mockFunction();
+      p.then(cb);
+
+      cb.shouldBeCalledWith(4).when(function() {
+         while(!loop.empty()) loop.run();
       });
    });
 

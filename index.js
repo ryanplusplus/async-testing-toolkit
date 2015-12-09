@@ -18,7 +18,9 @@ function Promise(eventLoop) {
    var SyncPromise = require('sync-promise');
 
    var P = function(fn) {
-      let syncPromise = new SyncPromise(fn);
+      let syncPromise = new SyncPromise(function(resolved, rejected) {
+        fn((v) => eventLoop.push(() => resolved(v)), rejected);
+      });
 
       return {
          then: function(cb) {
