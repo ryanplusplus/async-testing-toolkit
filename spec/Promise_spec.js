@@ -87,4 +87,13 @@ describe('Promise', function() {
          while(!loop.empty()) loop.run();
       });
    });
+
+   it('should resolve to an empty array when Promise.all is used with no promises', function() {
+      var cb = mach.mockFunction();
+      Promise.all([]).then(cb);
+
+      cb.shouldBeCalledWith(mach.same([])).when(function() {
+         while(!loop.empty()) loop.run();
+      });
+   });
 });

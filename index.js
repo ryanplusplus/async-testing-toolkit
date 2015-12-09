@@ -41,26 +41,33 @@ function Promise(eventLoop) {
    };
 
    P.all = function(promises) {
-      var promiseAll = SyncPromise.all(promises);
+      if(promises.length === 0) {
+         return new P(function(resolve) {
+            eventLoop.push(resolve.bind(null, []));
+         });
+      }
+      else {
+         var promiseAll = SyncPromise.all(promises);
 
-      return {
-         then: function(cb) {
-            promiseAll = promiseAll.then(function(v) {
-               eventLoop.push(function() {
-                  cb(v);
+         return {
+            then: function(cb) {
+               promiseAll = promiseAll.then(function(v) {
+                  eventLoop.push(function() {
+                     cb(v);
+                  });
                });
-            });
-            return this;
-         },
-         catch: function(cb) {
-            promiseAll = promiseAll.catch(function(v) {
-               eventLoop.push(function() {
-                  cb(v);
+               return this;
+            },
+            catch: function(cb) {
+               promiseAll = promiseAll.catch(function(v) {
+                  eventLoop.push(function() {
+                     cb(v);
+                  });
                });
-            });
-            return this;
-         }
-      };
+               return this;
+            }
+         };
+      }
    };
 
    return P;
