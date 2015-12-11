@@ -108,15 +108,10 @@ describe('Promise', function() {
       });
 
       it('should resolve to the event loop', function() {
-         var resolve;
-         var p = new Promise(function(_resolve) {
-            resolve = _resolve;
-         });
+         var p = new Promise(42);
 
          var cb = mach.mockFunction();
          Promise.all([p]).then(cb);
-
-         resolve(42);
 
          cb.shouldBeCalledWith(mach.same([42])).when(function() {
             while(!loop.empty()) loop.run();
@@ -124,15 +119,12 @@ describe('Promise', function() {
       });
 
       it('should reject to the event loop', function() {
-         var reject;
-         var p = new Promise(function(_, _reject) {
-            reject = _reject;
+         var p = new Promise(function(_, reject) {
+           reject(42);
          });
 
          var cb = mach.mockFunction();
          Promise.all([p]).catch(cb);
-
-         reject(42);
 
          cb.shouldBeCalledWith(42).when(function() {
             while(!loop.empty()) loop.run();
