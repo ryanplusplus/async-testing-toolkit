@@ -11,6 +11,15 @@ describe('Promise', function() {
    });
 
    describe('Promise', function() {
+      it('should allow a promise to be created from a value', function() {
+        var cb = mach.mockFunction();
+        new Promise(42).then(cb);
+
+        cb.shouldBeCalledWith(42).when(function() {
+           while(!loop.empty()) loop.run();
+        });
+      });
+
       it('should allow chaining', function() {
          new Promise(function() {})
             .then(() => 0)

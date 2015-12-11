@@ -18,33 +18,38 @@ function Promise(eventLoop) {
    var SyncPromise = require('sync-promise');
 
    var P = function(fn) {
-      let syncPromise = new SyncPromise(function(resolve, reject) {
-         try {
-            fn((v) => eventLoop.push(() => resolve(v)), (v) => eventLoop.push(() => reject(v)));
-         }
-         catch(e) {
-            eventLoop.push(() => reject(e));
-         }
-      });
+      if(typeof(fn) !== 'function') {
+        return new P((resolve) => resolve(fn));
+      }
+      else {
+         let syncPromise = new SyncPromise(function(resolve, reject) {
+            try {
+               fn((v) => eventLoop.push(() => resolve(v)), (v) => eventLoop.push(() => reject(v)));
+            }
+            catch(e) {
+               eventLoop.push(() => reject(e));
+            }
+         });
 
-      return {
-         then: function(cb) {
-            syncPromise = syncPromise.then(function(v) {
-               eventLoop.push(function() {
-                  cb(v);
+         return {
+            then: function(cb) {
+               syncPromise = syncPromise.then(function(v) {
+                  eventLoop.push(function() {
+                     cb(v);
+                  });
                });
-            });
-            return this;
-         },
-         catch: function(cb) {
-            syncPromise = syncPromise.catch(function(v) {
-               eventLoop.push(function() {
-                  cb(v);
+               return this;
+            },
+            catch: function(cb) {
+               syncPromise = syncPromise.catch(function(v) {
+                  eventLoop.push(function() {
+                     cb(v);
+                  });
                });
-            });
-            return this;
-         }
-      };
+               return this;
+            }
+         };
+      }
    };
 
    P.all = function(promises) {
