@@ -59,26 +59,7 @@ function Promise(eventLoop) {
          });
       }
       else {
-         var promiseAll = SyncPromise.all(promises);
-
-         return {
-            then: function(cb) {
-               promiseAll = promiseAll.then(function(v) {
-                  eventLoop.push(function() {
-                     cb(v);
-                  });
-               });
-               return this;
-            },
-            catch: function(cb) {
-               promiseAll = promiseAll.catch(function(v) {
-                  eventLoop.push(function() {
-                     cb(v);
-                  });
-               });
-               return this;
-            }
-         };
+        return SyncPromise.all(promises);
       }
    };
 
