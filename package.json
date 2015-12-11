@@ -1,6 +1,6 @@
 {
   "name": "async-testing-toolkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tools for getting asynchronous testing under control in JS",
   "main": "index.js",
   "scripts": {
