@@ -75,7 +75,7 @@ describe('Promise', function() {
       });
    });
 
-   it('should synchronous rejection via a throw', function() {
+   it('should allow synchronous rejection via a throw', function() {
      var p = new Promise(function() {
         throw 4;
      });
