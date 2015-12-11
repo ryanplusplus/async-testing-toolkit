@@ -49,7 +49,7 @@ describe('Promise', function() {
       });
    });
 
-   it('should allow synchronously resolved promise', function() {
+   it('should allow synchronous resolution', function() {
       var p = new Promise(function(resolve) {
          resolve(4);
       });
@@ -60,6 +60,32 @@ describe('Promise', function() {
       cb.shouldBeCalledWith(4).when(function() {
          while(!loop.empty()) loop.run();
       });
+   });
+
+   it('should allow synchronous rejection', function() {
+      var p = new Promise(function(_, reject) {
+         reject(4);
+      });
+
+      var cb = mach.mockFunction();
+      p.catch(cb);
+
+      cb.shouldBeCalledWith(4).when(function() {
+         while(!loop.empty()) loop.run();
+      });
+   });
+
+   it('should synchronous rejection via a throw', function() {
+     var p = new Promise(function() {
+        throw 4;
+     });
+
+     var cb = mach.mockFunction();
+     p.catch(cb);
+
+     cb.shouldBeCalledWith(4).when(function() {
+        while(!loop.empty()) loop.run();
+     });
    });
 
    it('should allow chaining for Promise.all', function() {
